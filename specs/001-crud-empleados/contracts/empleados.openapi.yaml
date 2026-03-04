@@ -1,0 +1,130 @@
+openapi: 3.0.3
+info:
+  title: API CRUD Empleados
+  version: 1.0.0
+paths:
+  /api/v1/empleados:
+    get:
+      summary: Listar empleados
+      responses:
+        '200':
+          description: Lista de empleados
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EmpleadoResponse'
+    post:
+      summary: Crear empleado
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmpleadoRequest'
+      responses:
+        '201':
+          description: Empleado creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmpleadoResponse'
+        '400':
+          description: Error de validación
+        '409':
+          description: Clave duplicada
+  /api/v1/empleados/{clave}:
+    get:
+      summary: Obtener empleado por clave
+      parameters:
+        - in: path
+          name: clave
+          required: true
+          schema:
+            type: string
+            maxLength: 100
+            pattern: '^EMP-[0-9]+$'
+      responses:
+        '200':
+          description: Empleado encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmpleadoResponse'
+        '404':
+          description: Empleado no encontrado
+    put:
+      summary: Actualizar empleado por clave
+      parameters:
+        - in: path
+          name: clave
+          required: true
+          schema:
+            type: string
+            maxLength: 100
+            pattern: '^EMP-[0-9]+$'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmpleadoRequest'
+      responses:
+        '200':
+          description: Empleado actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmpleadoResponse'
+        '400':
+          description: Error de validación
+        '404':
+          description: Empleado no encontrado
+    delete:
+      summary: Eliminar empleado por clave
+      parameters:
+        - in: path
+          name: clave
+          required: true
+          schema:
+            type: string
+            maxLength: 100
+            pattern: '^EMP-[0-9]+$'
+      responses:
+        '204':
+          description: Empleado eliminado
+        '404':
+          description: Empleado no encontrado
+components:
+  schemas:
+    EmpleadoRequest:
+      type: object
+      required: [nombre, direccion, telefono]
+      properties:
+        nombre:
+          type: string
+          maxLength: 100
+        direccion:
+          type: string
+          maxLength: 100
+        telefono:
+          type: string
+          maxLength: 100
+    EmpleadoResponse:
+      type: object
+      required: [clave, nombre, direccion, telefono]
+      properties:
+        clave:
+          type: string
+          maxLength: 100
+          pattern: '^EMP-[0-9]+$'
+        nombre:
+          type: string
+          maxLength: 100
+        direccion:
+          type: string
+          maxLength: 100
+        telefono:
+          type: string
+          maxLength: 100

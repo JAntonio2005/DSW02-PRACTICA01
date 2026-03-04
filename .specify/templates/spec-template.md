@@ -5,6 +5,14 @@
 **Status**: Draft  
 **Input**: User description: "$ARGUMENTS"
 
+## Constitution Alignment *(mandatory)*
+
+- Backend implementation MUST target Spring Boot 3.x with Java 17.
+- APIs requiring protection MUST define authentication and authorization behavior.
+- Persistent data changes MUST define PostgreSQL impact and migration needs.
+- Delivery strategy MUST define Docker execution path (service + dependencies).
+- API changes MUST define OpenAPI/Swagger documentation updates.
+
 ## User Scenarios & Testing *(mandatory)*
 
 <!--
@@ -89,11 +97,14 @@
 - **FR-003**: Users MUST be able to [key interaction, e.g., "reset their password"]
 - **FR-004**: System MUST [data requirement, e.g., "persist user preferences"]
 - **FR-005**: System MUST [behavior, e.g., "log all security events"]
+- **FR-006**: System MUST document affected endpoints in OpenAPI/Swagger.
+- **FR-007**: System MUST define authentication requirements per endpoint/resource.
+- **FR-008**: System MUST define PostgreSQL schema/data changes and migration strategy.
 
 *Example of marking unclear requirements:*
 
-- **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
-- **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
+- **FR-009**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - JWT, session, OAuth2?]
+- **FR-010**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
 
 ### Key Entities *(include if feature involves data)*
 

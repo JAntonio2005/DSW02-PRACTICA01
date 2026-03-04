@@ -1,0 +1,32 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: empleados-postgres
+    environment:
+      POSTGRES_DB: empleadosdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d empleadosdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: empleados-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/empleadosdb
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      APP_ADMIN_USER: admin
+      APP_ADMIN_PASSWORD: admin123
+    ports:
+      - "8080:8080"

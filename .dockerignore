@@ -1,0 +1,25 @@
+# Git
+.git/
+.gitignore
+
+# Build outputs
+build/
+out/
+
+# IDE / editor
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.*
+
+# Node (if ever present)
+node_modules/
+
+# Docs/spec artifacts
+specs/
+.specify/

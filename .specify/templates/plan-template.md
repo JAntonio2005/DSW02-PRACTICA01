@@ -31,7 +31,12 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] Stack gate: Solution uses Spring Boot 3.x + Java 17 (or includes approved amendment).
+- [ ] Security gate: Authentication/authorization strategy is explicit for all non-public APIs.
+- [ ] Data gate: PostgreSQL is primary datastore and schema migration plan is defined.
+- [ ] Container gate: Dockerfile and local container orchestration approach are defined.
+- [ ] API contract gate: OpenAPI/Swagger documentation update is planned with implementation.
+- [ ] Quality gate: Tests and compliance checks include auth, data access, and error paths.
 
 ## Project Structure
 

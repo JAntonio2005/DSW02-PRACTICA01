@@ -43,6 +43,6 @@ springdoc:
 
 app:
   security:
-    admin-user: ${APP_ADMIN_USER:admin}
-    admin-password: ${APP_ADMIN_PASSWORD:admin123}
-    admin-role: ADMIN
+    admin-user: ${APP_ADMIN_USER}
+    admin-password: ${APP_ADMIN_PASSWORD}
+    admin-role: ${APP_ADMIN_ROLE:ADMIN}

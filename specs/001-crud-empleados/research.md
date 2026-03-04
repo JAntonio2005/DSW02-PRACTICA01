@@ -1,7 +1,7 @@
 # Research: CRUD de Empleados
 
 ## Decision 1: Seguridad de endpoints CRUD
-- Decision: Proteger endpoints CRUD con Spring Security (autenticación obligatoria) y autorización por rol administrativo.
+- Decision: Proteger endpoints CRUD con Spring Security (autenticación obligatoria) y autorización por rol administrativo, usando autenticación básica con credenciales `admin/admin123`.
 - Rationale: La constitución exige protección para APIs no públicas y definición explícita de autorización por recurso.
 - Alternatives considered:
   - API abierta en local sin auth: rechazada por incumplir la constitución.
@@ -22,14 +22,14 @@
   - Respaldo previo obligatorio: rechazado por complejidad fuera de alcance MVP.
 
 ## Decision 4: Contrato API
-- Decision: API REST JSON versionada bajo `/api/v1/empleados` con operaciones create/list/get/update/delete.
+- Decision: API REST JSON versionada bajo `/api/v2/empleados` con operaciones create/list/get/update/delete y paginación en el listado.
 - Rationale: Convención estándar para CRUD, fácil de documentar en OpenAPI/Swagger y testear con MockMvc.
 - Alternatives considered:
   - Rutas sin versionado: rechazada para evitar deuda de versionamiento futuro.
   - API RPC/GraphQL: rechazada por no aportar valor al alcance.
 
 ## Decision 5: Reglas de validación de campos
-- Decision: `clave`, `nombre`, `direccion`, `telefono` son obligatorios y máximo 100 caracteres.
+- Decision: `nombre`, `direccion`, `telefono` son obligatorios y máximo 100 caracteres; `clave` se autogenera con formato `EMP-<consecutivo>`.
 - Rationale: Alineado con requerimientos FR-002a y FR-006 del spec.
 - Alternatives considered:
   - Límites distintos por campo: rechazado por contradecir requisito explícito del usuario.

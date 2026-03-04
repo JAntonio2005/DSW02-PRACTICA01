@@ -32,7 +32,7 @@ Implementar un CRUD de empleados con persistencia en PostgreSQL para los campos 
 - [x] API contract gate: OpenAPI/Swagger documentation update is planned with implementation.
 - [x] Quality gate: Tests and compliance checks include auth, data access, and error paths.
 
-**Pre-Phase 0 Result**: PASS. Se detectó tensión entre FR-012 del spec (sin auth obligatoria en práctica local) y la constitución (auth obligatoria en APIs no públicas). La decisión de diseño mantiene seguridad activa para endpoints CRUD, con configuración explícita por ruta/rol.
+**Pre-Phase 0 Result**: PASS. No existen conflictos vigentes entre spec y constitución sobre autenticación; el CRUD se define como autenticado con autorización explícita por recurso.
 
 ## Project Structure
 

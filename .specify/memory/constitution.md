@@ -36,6 +36,8 @@ Rationale: mantener compatibilidad, soporte LTS y uniformidad operativa.
 Todo endpoint no público MUST estar protegido con autenticación en Spring Security.
 Las decisiones de autorización MUST declararse explícitamente por ruta/recurso y
 los eventos de autenticación fallida MUST registrarse para auditoría.
+Para este proyecto académico, la autenticación básica MUST usar credenciales
+fijas de referencia: usuario `admin` y contraseña `admin123`.
 Rationale: reducir superficie de ataque y asegurar control de acceso consistente.
 
 ### III. Persistencia en PostgreSQL con Migraciones Trazables
@@ -91,4 +93,4 @@ Esta constitución prevalece sobre convenciones locales de implementación.
 - Compliance Review: cada PR MUST incluir verificación explícita del
 	Constitution Check en plan/spec/tasks cuando aplique.
 
-**Version**: 1.0.0 | **Ratified**: 2026-02-25 | **Last Amended**: 2026-02-25
+**Version**: 1.1.0 | **Ratified**: 2026-02-25 | **Last Amended**: 2026-03-04

@@ -1,20 +1,33 @@
 openapi: 3.0.3
 info:
   title: API CRUD Empleados
-  version: 1.0.0
+  version: 2.0.0
 paths:
-  /api/v1/empleados:
+  /api/v2/empleados:
     get:
-      summary: Listar empleados
+      summary: Listar empleados con paginación
+      parameters:
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - in: query
+          name: size
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 10
       responses:
         '200':
-          description: Lista de empleados
+          description: Página de empleados
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/EmpleadoResponse'
+                $ref: '#/components/schemas/EmpleadoPageResponse'
     post:
       summary: Crear empleado
       requestBody:
@@ -34,7 +47,7 @@ paths:
           description: Error de validación
         '409':
           description: Clave duplicada
-  /api/v1/empleados/{clave}:
+  /api/v2/empleados/{clave}:
     get:
       summary: Obtener empleado por clave
       parameters:
@@ -98,6 +111,30 @@ paths:
           description: Empleado no encontrado
 components:
   schemas:
+    EmpleadoPageResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmpleadoResponse'
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+        size:
+          type: integer
+        number:
+          type: integer
+        first:
+          type: boolean
+        last:
+          type: boolean
+        numberOfElements:
+          type: integer
+        empty:
+          type: boolean
     EmpleadoRequest:
       type: object
       required: [nombre, direccion, telefono]

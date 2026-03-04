@@ -12,6 +12,7 @@ out/
 
 # Logs
 *.log
+*.log*
 
 # Environment
 .env
@@ -19,6 +20,11 @@ out/
 
 # Node (if ever present)
 node_modules/
+coverage/
+
+# Docker build context hygiene
+Dockerfile*
+.dockerignore
 
 # Docs/spec artifacts
 specs/

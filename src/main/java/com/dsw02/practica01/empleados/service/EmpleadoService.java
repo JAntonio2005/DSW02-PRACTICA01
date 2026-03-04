@@ -6,6 +6,10 @@ import com.dsw02.practica01.empleados.dto.EmpleadoRequest;
 import com.dsw02.practica01.empleados.dto.EmpleadoResponse;
 import com.dsw02.practica01.empleados.repository.EmpleadoRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,8 +39,9 @@ public class EmpleadoService {
     }
 
     @Transactional(readOnly = true)
-    public List<EmpleadoResponse> findAll() {
-        return empleadoRepository.findAll().stream().map(this::toResponse).toList();
+    public Page<EmpleadoResponse> findAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "clave"));
+        return empleadoRepository.findAll(pageable).map(this::toResponse);
     }
 
     @Transactional(readOnly = true)

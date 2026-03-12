@@ -42,7 +42,6 @@ springdoc:
     path: /swagger-ui/index.html
 
 app:
-  security:
-    admin-user: ${APP_ADMIN_USER}
-    admin-password: ${APP_ADMIN_PASSWORD}
-    admin-role: ${APP_ADMIN_ROLE:ADMIN}
+  jwt:
+    secret: ${APP_JWT_SECRET:0123456789ABCDEF0123456789ABCDEF}
+    expiration-minutes: ${APP_JWT_EXPIRATION_MINUTES:60}

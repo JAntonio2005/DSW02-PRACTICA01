@@ -1,19 +1,22 @@
 package com.dsw02.practica01.empleados.service;
 
 import com.dsw02.practica01.common.exception.ResourceNotFoundException;
+import com.dsw02.practica01.common.exception.ConflictException;
 import com.dsw02.practica01.empleados.domain.Empleado;
+import com.dsw02.practica01.empleados.dto.CredencialEmpleadoRequest;
 import com.dsw02.practica01.empleados.dto.EmpleadoRequest;
 import com.dsw02.practica01.empleados.dto.EmpleadoResponse;
 import com.dsw02.practica01.empleados.repository.EmpleadoRepository;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 @Service
 public class EmpleadoService {
@@ -34,14 +37,25 @@ public class EmpleadoService {
         empleado.setDireccion(normalize(request.direccion()));
         empleado.setTelefono(normalize(request.telefono()));
 
+        if (request.correo() != null && !request.correo().isBlank()) {
+            String correo = normalizeEmail(request.correo());
+            if (empleadoRepository.existsByCorreoIgnoreCase(correo)) {
+                throw new ConflictException("El correo ya está registrado");
+            }
+            empleado.setCorreo(correo);
+            if (request.password() != null && !request.password().isBlank()) {
+                empleado.setPasswordHash(hashSha256(request.password()));
+            }
+        }
+
         Empleado created = empleadoRepository.save(empleado);
         return toResponse(created);
     }
 
     @Transactional(readOnly = true)
     public Page<EmpleadoResponse> findAll(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "clave"));
-        return empleadoRepository.findAll(pageable).map(this::toResponse);
+        Pageable pageable = PageRequest.of(page, size);
+        return empleadoRepository.findAllOrderByClaveNumeric(pageable).map(this::toResponse);
     }
 
     @Transactional(readOnly = true)
@@ -59,6 +73,34 @@ public class EmpleadoService {
         empleado.setNombre(normalize(request.nombre()));
         empleado.setDireccion(normalize(request.direccion()));
         empleado.setTelefono(normalize(request.telefono()));
+
+        if (request.correo() != null && !request.correo().isBlank()) {
+            String correo = normalizeEmail(request.correo());
+            if (empleadoRepository.existsByCorreoIgnoreCaseAndClaveNot(correo, clave)) {
+                throw new ConflictException("El correo ya está registrado por otro empleado");
+            }
+            empleado.setCorreo(correo);
+        }
+
+        if (request.password() != null && !request.password().isBlank()) {
+            empleado.setPasswordHash(hashSha256(request.password()));
+        }
+
+        return toResponse(empleadoRepository.save(empleado));
+    }
+
+    @Transactional
+    public EmpleadoResponse updateCredenciales(String clave, CredencialEmpleadoRequest request) {
+        Empleado empleado = empleadoRepository.findById(clave)
+                .orElseThrow(() -> new ResourceNotFoundException("Empleado no encontrado para clave: " + clave));
+
+        String correo = normalizeEmail(request.correo());
+        if (empleadoRepository.existsByCorreoIgnoreCaseAndClaveNot(correo, clave)) {
+            throw new ConflictException("El correo ya está registrado por otro empleado");
+        }
+
+        empleado.setCorreo(correo);
+        empleado.setPasswordHash(hashSha256(request.password()));
 
         return toResponse(empleadoRepository.save(empleado));
     }
@@ -80,12 +122,31 @@ public class EmpleadoService {
         return value == null ? null : value.trim();
     }
 
+    private String normalizeEmail(String value) {
+        return normalize(value).toLowerCase();
+    }
+
+    private String hashSha256(String plain) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(plain.getBytes(StandardCharsets.UTF_8));
+            StringBuilder builder = new StringBuilder();
+            for (byte b : hash) {
+                builder.append(String.format("%02x", b));
+            }
+            return builder.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException("SHA-256 no disponible", e);
+        }
+    }
+
     private EmpleadoResponse toResponse(Empleado empleado) {
         return new EmpleadoResponse(
                 empleado.getClave(),
                 empleado.getNombre(),
                 empleado.getDireccion(),
-                empleado.getTelefono()
+                empleado.getTelefono(),
+                empleado.getCorreo()
         );
     }
 }

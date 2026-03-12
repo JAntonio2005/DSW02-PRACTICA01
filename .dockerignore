@@ -5,6 +5,7 @@
 # Build outputs
 build/
 out/
+target/
 
 # IDE / editor
 .vscode/

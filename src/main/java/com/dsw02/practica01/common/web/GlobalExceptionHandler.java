@@ -1,6 +1,7 @@
 package com.dsw02.practica01.common.web;
 
 import com.dsw02.practica01.common.exception.ConflictException;
+import com.dsw02.practica01.common.exception.InvalidCredentialsException;
 import com.dsw02.practica01.common.exception.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
@@ -24,36 +25,45 @@ public class GlobalExceptionHandler {
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
             fieldErrors.put(error.getField(), error.getDefaultMessage());
         }
-        return build(HttpStatus.BAD_REQUEST, "Validation failed", request.getRequestURI(), fieldErrors);
+        String code = request.getRequestURI().startsWith("/api/auth/login")
+                ? "AUTH_VALIDATION_ERROR"
+                : "VALIDATION_ERROR";
+        String message = request.getRequestURI().startsWith("/api/auth/login")
+                ? "Datos de autenticación inválidos"
+                : "Validation failed";
+        return build(HttpStatus.BAD_REQUEST, code, message, fieldErrors);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ApiErrorResponse> handleConstraint(ConstraintViolationException ex, HttpServletRequest request) {
-        return build(HttpStatus.BAD_REQUEST, ex.getMessage(), request.getRequestURI(), null);
+        return build(HttpStatus.BAD_REQUEST, "VALIDATION_ERROR", ex.getMessage(), null);
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ApiErrorResponse> handleInvalidCredentials(InvalidCredentialsException ex) {
+        return build(HttpStatus.UNAUTHORIZED, "AUTH_INVALID_CREDENTIALS", "Credenciales inválidas", null);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ApiErrorResponse> handleNotFound(ResourceNotFoundException ex, HttpServletRequest request) {
-        return build(HttpStatus.NOT_FOUND, ex.getMessage(), request.getRequestURI(), null);
+    public ResponseEntity<ApiErrorResponse> handleNotFound(ResourceNotFoundException ex) {
+        return build(HttpStatus.NOT_FOUND, "NOT_FOUND", ex.getMessage(), null);
     }
 
     @ExceptionHandler(ConflictException.class)
-    public ResponseEntity<ApiErrorResponse> handleConflict(ConflictException ex, HttpServletRequest request) {
-        return build(HttpStatus.CONFLICT, ex.getMessage(), request.getRequestURI(), null);
+    public ResponseEntity<ApiErrorResponse> handleConflict(ConflictException ex) {
+        return build(HttpStatus.CONFLICT, "CONFLICT", ex.getMessage(), null);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiErrorResponse> handleUnhandled(Exception ex, HttpServletRequest request) {
-        return build(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error", request.getRequestURI(), null);
+    public ResponseEntity<ApiErrorResponse> handleUnhandled(Exception ex) {
+        return build(HttpStatus.INTERNAL_SERVER_ERROR, "INTERNAL_ERROR", "Unexpected error", null);
     }
 
-    private ResponseEntity<ApiErrorResponse> build(HttpStatus status, String message, String path, Map<String, String> fieldErrors) {
+    private ResponseEntity<ApiErrorResponse> build(HttpStatus status, String code, String message, Map<String, String> fieldErrors) {
         ApiErrorResponse body = new ApiErrorResponse(
                 Instant.now(),
-                status.value(),
-                status.getReasonPhrase(),
+                code,
                 message,
-                path,
                 fieldErrors
         );
         return ResponseEntity.status(status).body(body);

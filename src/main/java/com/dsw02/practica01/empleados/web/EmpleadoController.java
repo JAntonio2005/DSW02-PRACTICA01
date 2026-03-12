@@ -1,5 +1,6 @@
 package com.dsw02.practica01.empleados.web;
 
+import com.dsw02.practica01.empleados.dto.CredencialEmpleadoRequest;
 import com.dsw02.practica01.empleados.dto.EmpleadoRequest;
 import com.dsw02.practica01.empleados.dto.EmpleadoResponse;
 import com.dsw02.practica01.empleados.service.EmpleadoService;
@@ -17,7 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v2/empleados")
+@RequestMapping({"/api/empleados", "/api/v2/empleados"})
 @Tag(name = "Empleados", description = "Operaciones CRUD de empleados")
 public class EmpleadoController {
 
@@ -71,5 +72,14 @@ public class EmpleadoController {
     public ResponseEntity<Void> delete(@PathVariable String clave) {
         empleadoService.delete(clave);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{clave}/credenciales")
+    @Operation(summary = "Actualizar credenciales (correo/password) de empleado")
+    public ResponseEntity<EmpleadoResponse> updateCredenciales(
+            @PathVariable String clave,
+            @Valid @RequestBody CredencialEmpleadoRequest request
+    ) {
+        return ResponseEntity.ok(empleadoService.updateCredenciales(clave, request));
     }
 }

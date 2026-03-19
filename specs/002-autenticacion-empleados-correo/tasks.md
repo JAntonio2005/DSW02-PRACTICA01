@@ -17,11 +17,11 @@
 
 **Purpose**: Preparar dependencias y configuración base de autenticación JWT
 
-- [ ] T001 Agregar dependencia JWT compatible con Spring Security en pom.xml
-- [ ] T002 [P] Añadir configuración JWT base (secret y expiración) en src/main/resources/application.yml
-- [ ] T003 [P] Definir variables de entorno JWT en .env.example
-- [ ] T004 [P] Propagar variables JWT para ejecución local en docker/docker-compose.yml
-- [ ] T005 Crear estructura base de seguridad en src/main/java/com/dsw02/practica01/common/security/
+- [X] T001 Agregar dependencia JWT compatible con Spring Security en pom.xml
+- [X] T002 [P] Añadir configuración JWT base (secret y expiración) en src/main/resources/application.yml
+- [X] T003 [P] Definir variables de entorno JWT en .env.example
+- [X] T004 [P] Propagar variables JWT para ejecución local en docker/docker-compose.yml
+- [X] T005 Crear estructura base de seguridad en src/main/java/com/dsw02/practica01/common/security/
 
 ---
 
@@ -31,14 +31,14 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T006 Crear migración para correo y hash de contraseña en src/main/resources/db/migration/V2__auth_empleados.sql
-- [ ] T007 [P] Implementar propiedades tipadas de JWT en src/main/java/com/dsw02/practica01/common/security/JwtProperties.java
-- [ ] T008 [P] Implementar emisión/validación de JWT en src/main/java/com/dsw02/practica01/common/security/JwtService.java
-- [ ] T009 [P] Implementar filtro JWT para SecurityContext en src/main/java/com/dsw02/practica01/common/security/JwtAuthenticationFilter.java
-- [ ] T010 Configurar cadena base de seguridad (stateless + filtro JWT) en src/main/java/com/dsw02/practica01/common/security/SecurityConfig.java
-- [ ] T011 [P] Crear DTOs de login en src/main/java/com/dsw02/practica01/empleados/dto/LoginRequest.java y src/main/java/com/dsw02/practica01/empleados/dto/LoginResponse.java
-- [ ] T012 [P] Crear entidad de eventos de autenticación en src/main/java/com/dsw02/practica01/empleados/domain/EventoAutenticacion.java
-- [ ] T013 [P] Crear repositorio de eventos de autenticación en src/main/java/com/dsw02/practica01/empleados/repository/EventoAutenticacionRepository.java
+- [X] T006 Crear migración para correo y hash de contraseña en src/main/resources/db/migration/V2__auth_empleados.sql
+- [X] T007 [P] Implementar propiedades tipadas de JWT en src/main/java/com/dsw02/practica01/common/security/JwtProperties.java
+- [X] T008 [P] Implementar emisión/validación de JWT en src/main/java/com/dsw02/practica01/common/security/JwtService.java
+- [X] T009 [P] Implementar filtro JWT para SecurityContext en src/main/java/com/dsw02/practica01/common/security/JwtAuthenticationFilter.java
+- [X] T010 Configurar cadena base de seguridad (stateless + filtro JWT) en src/main/java/com/dsw02/practica01/common/security/SecurityConfig.java
+- [X] T011 [P] Crear DTOs de login en src/main/java/com/dsw02/practica01/empleados/dto/LoginRequest.java y src/main/java/com/dsw02/practica01/empleados/dto/LoginResponse.java
+- [X] T012 [P] Crear entidad de eventos de autenticación en src/main/java/com/dsw02/practica01/empleados/domain/EventoAutenticacion.java
+- [X] T013 [P] Crear repositorio de eventos de autenticación en src/main/java/com/dsw02/practica01/empleados/repository/EventoAutenticacionRepository.java
 
 **Checkpoint**: Foundation ready - user story implementation can now begin
 
@@ -52,21 +52,21 @@
 
 ### Tests for User Story 1
 
-- [ ] T014 [P] [US1] Crear prueba de login válido y credenciales incorrectas verificando `AUTH_INVALID_CREDENTIALS` en src/test/java/com/dsw02/practica01/integration/AuthLoginIntegrationTest.java
-- [ ] T015 [P] [US1] Crear prueba de correo inválido/contraseña vacía verificando `AUTH_VALIDATION_ERROR` en src/test/java/com/dsw02/practica01/integration/AuthLoginValidationIntegrationTest.java
-- [ ] T016 [P] [US1] Crear prueba de contrato de error `{code,message,timestamp}` para login en src/test/java/com/dsw02/practica01/integration/AuthErrorContractIntegrationTest.java
+- [X] T014 [P] [US1] Crear prueba de login válido y credenciales incorrectas verificando `AUTH_INVALID_CREDENTIALS` en src/test/java/com/dsw02/practica01/integration/AuthLoginIntegrationTest.java
+- [X] T015 [P] [US1] Crear prueba de correo inválido/contraseña vacía verificando `AUTH_VALIDATION_ERROR` en src/test/java/com/dsw02/practica01/integration/AuthLoginValidationIntegrationTest.java
+- [X] T016 [P] [US1] Crear prueba de contrato de error `{code,message,timestamp}` para login en src/test/java/com/dsw02/practica01/integration/AuthErrorContractIntegrationTest.java
 
 ### Implementation for User Story 1
 
-- [ ] T017 [P] [US1] Agregar campo de correo único en src/main/java/com/dsw02/practica01/empleados/domain/Empleado.java
-- [ ] T018 [P] [US1] Agregar campo de hash de contraseña en src/main/java/com/dsw02/practica01/empleados/domain/Empleado.java
-- [ ] T019 [P] [US1] Añadir consulta por correo en src/main/java/com/dsw02/practica01/empleados/repository/EmpleadoRepository.java
-- [ ] T020 [US1] Implementar autenticación por correo/password con SHA-256 en src/main/java/com/dsw02/practica01/empleados/service/AuthService.java
-- [ ] T021 [US1] Implementar endpoint POST de login en src/main/java/com/dsw02/practica01/empleados/web/AuthController.java
-- [ ] T022 [US1] Mapear errores de autenticación sin filtrar detalle interno en src/main/java/com/dsw02/practica01/common/web/GlobalExceptionHandler.java
-- [ ] T023 [US1] Estandarizar payload de error de login con `AUTH_INVALID_CREDENTIALS` y `AUTH_VALIDATION_ERROR` en src/main/java/com/dsw02/practica01/common/web/GlobalExceptionHandler.java
-- [ ] T024 [US1] Registrar eventos de autenticación exitosa/fallida en src/main/java/com/dsw02/practica01/empleados/service/AuthService.java
-- [ ] T025 [US1] Validar formato de correo de login con Bean Validation en src/main/java/com/dsw02/practica01/empleados/dto/LoginRequest.java
+- [X] T017 [P] [US1] Agregar campo de correo único en src/main/java/com/dsw02/practica01/empleados/domain/Empleado.java
+- [X] T018 [P] [US1] Agregar campo de hash de contraseña en src/main/java/com/dsw02/practica01/empleados/domain/Empleado.java
+- [X] T019 [P] [US1] Añadir consulta por correo en src/main/java/com/dsw02/practica01/empleados/repository/EmpleadoRepository.java
+- [X] T020 [US1] Implementar autenticación por correo/password con SHA-256 en src/main/java/com/dsw02/practica01/empleados/service/AuthService.java
+- [X] T021 [US1] Implementar endpoint POST de login en src/main/java/com/dsw02/practica01/empleados/web/AuthController.java
+- [X] T022 [US1] Mapear errores de autenticación sin filtrar detalle interno en src/main/java/com/dsw02/practica01/common/web/GlobalExceptionHandler.java
+- [X] T023 [US1] Estandarizar payload de error de login con `AUTH_INVALID_CREDENTIALS` y `AUTH_VALIDATION_ERROR` en src/main/java/com/dsw02/practica01/common/web/GlobalExceptionHandler.java
+- [X] T024 [US1] Registrar eventos de autenticación exitosa/fallida en src/main/java/com/dsw02/practica01/empleados/service/AuthService.java
+- [X] T025 [US1] Validar formato de correo de login con Bean Validation en src/main/java/com/dsw02/practica01/empleados/dto/LoginRequest.java
 
 **Checkpoint**: User Story 1 should be fully functional and testable independently
 
@@ -80,16 +80,16 @@
 
 ### Tests for User Story 2
 
-- [ ] T026 [P] [US2] Crear prueba de acceso a `/api/empleados/**` sin token y con token válido, validando `/api/auth/login` pública en src/test/java/com/dsw02/practica01/integration/AuthzEndpointIntegrationTest.java
-- [ ] T027 [P] [US2] Crear prueba de token expirado en src/test/java/com/dsw02/practica01/integration/TokenExpirationIntegrationTest.java
+- [X] T026 [P] [US2] Crear prueba de acceso a `/api/empleados/**` sin token y con token válido, validando `/api/auth/login` pública en src/test/java/com/dsw02/practica01/integration/AuthzEndpointIntegrationTest.java
+- [X] T027 [P] [US2] Crear prueba de token expirado en src/test/java/com/dsw02/practica01/integration/TokenExpirationIntegrationTest.java
 
 ### Implementation for User Story 2
 
-- [ ] T028 [US2] Definir en SecurityConfig que `/api/empleados/**` es privado y `/api/auth/login` es público en src/main/java/com/dsw02/practica01/common/security/SecurityConfig.java
-- [ ] T029 [US2] Aplicar validación de expiración de 60 minutos en src/main/java/com/dsw02/practica01/common/security/JwtService.java
-- [ ] T030 [US2] Ajustar manejo de token ausente/expirado/inválido en src/main/java/com/dsw02/practica01/common/security/JwtAuthenticationFilter.java
-- [ ] T031 [US2] Estandarizar respuestas de autorización/autenticación por política en src/main/java/com/dsw02/practica01/common/web/GlobalExceptionHandler.java
-- [ ] T032 [US2] Mantener registro de intentos fallidos repetidos sin bloqueo automático en src/main/java/com/dsw02/practica01/empleados/service/AuthService.java
+- [X] T028 [US2] Definir en SecurityConfig que `/api/empleados/**` es privado y `/api/auth/login` es público en src/main/java/com/dsw02/practica01/common/security/SecurityConfig.java
+- [X] T029 [US2] Aplicar validación de expiración de 60 minutos en src/main/java/com/dsw02/practica01/common/security/JwtService.java
+- [X] T030 [US2] Ajustar manejo de token ausente/expirado/inválido en src/main/java/com/dsw02/practica01/common/security/JwtAuthenticationFilter.java
+- [X] T031 [US2] Estandarizar respuestas de autorización/autenticación por política en src/main/java/com/dsw02/practica01/common/web/GlobalExceptionHandler.java
+- [X] T032 [US2] Mantener registro de intentos fallidos repetidos sin bloqueo automático en src/main/java/com/dsw02/practica01/empleados/service/AuthService.java
 
 **Checkpoint**: User Story 2 should be fully functional and testable independently
 
@@ -109,12 +109,12 @@
 
 ### Implementation for User Story 3
 
-- [ ] T036 [P] [US3] Crear DTO de alta/actualización de credenciales en src/main/java/com/dsw02/practica01/empleados/dto/CredencialEmpleadoRequest.java
-- [ ] T037 [US3] Implementar actualización de correo/hash de contraseña en src/main/java/com/dsw02/practica01/empleados/service/EmpleadoService.java
-- [ ] T038 [US3] Validar unicidad de correo en alta/actualización en src/main/java/com/dsw02/practica01/empleados/service/EmpleadoService.java
-- [ ] T039 [US3] Implementar endpoint de gestión de credenciales en src/main/java/com/dsw02/practica01/empleados/web/EmpleadoController.java
-- [ ] T040 [US3] Validar formato de correo en DTO de credenciales en src/main/java/com/dsw02/practica01/empleados/dto/CredencialEmpleadoRequest.java
-- [ ] T041 [US3] Mapear conflicto por correo duplicado y validaciones de entrada en src/main/java/com/dsw02/practica01/common/web/GlobalExceptionHandler.java
+- [X] T036 [P] [US3] Crear DTO de alta/actualización de credenciales en src/main/java/com/dsw02/practica01/empleados/dto/CredencialEmpleadoRequest.java
+- [X] T037 [US3] Implementar actualización de correo/hash de contraseña en src/main/java/com/dsw02/practica01/empleados/service/EmpleadoService.java
+- [X] T038 [US3] Validar unicidad de correo en alta/actualización en src/main/java/com/dsw02/practica01/empleados/service/EmpleadoService.java
+- [X] T039 [US3] Implementar endpoint de gestión de credenciales en src/main/java/com/dsw02/practica01/empleados/web/EmpleadoController.java
+- [X] T040 [US3] Validar formato de correo en DTO de credenciales en src/main/java/com/dsw02/practica01/empleados/dto/CredencialEmpleadoRequest.java
+- [X] T041 [US3] Mapear conflicto por correo duplicado y validaciones de entrada en src/main/java/com/dsw02/practica01/common/web/GlobalExceptionHandler.java
 
 **Checkpoint**: User Story 3 should be fully functional and testable independently
 
@@ -127,15 +127,15 @@
 - [ ] T042 [P] Documentar quickstart de login JWT y uso de token en specs/002-autenticacion-empleados-correo/quickstart.md
 - [ ] T043 [P] Documentar contrato OpenAPI de login y seguridad Bearer con ejemplos request/response y errores 400/401/403/409 en specs/002-autenticacion-empleados-correo/contracts/auth.openapi.yaml
 - [ ] T044 [P] Validar en OpenAPI esquema BearerAuth y respuestas por endpoint protegido en specs/002-autenticacion-empleados-correo/contracts/auth.openapi.yaml
-- [ ] T053 [P] Documentar impacto de esquema PostgreSQL y estrategia de migración/rollback para autenticación en specs/002-autenticacion-empleados-correo/quickstart.md
-- [ ] T045 Ejecutar validación de build y pruebas con ./mvnw clean test en pom.xml
+- [X] T045 Ejecutar validación de build y pruebas con ./mvnw clean test en pom.xml
 - [ ] T046 Verificar ejecución en Docker con variables JWT en docker/docker-compose.yml
 - [ ] T047 Ejecutar verificación de SC-001 (100 intentos, 95% éxito y p95 < 500 ms) en specs/002-autenticacion-empleados-correo/quickstart.md
 - [ ] T048 Ejecutar verificación de SC-002 con códigos de error AUTH_VALIDATION_ERROR y AUTH_INVALID_CREDENTIALS en specs/002-autenticacion-empleados-correo/quickstart.md
 - [ ] T049 Ejecutar verificación de SC-003 sobre `/api/empleados/**` (rechazo sin token) y `/api/auth/login` (acceso público) en specs/002-autenticacion-empleados-correo/quickstart.md
 - [ ] T050 Ejecutar verificación de SC-004 (cambio de credenciales visible en siguiente login) en specs/002-autenticacion-empleados-correo/quickstart.md
 - [ ] T051 Documentar evidencia final de SC-001, SC-002, SC-003 y SC-004 en specs/002-autenticacion-empleados-correo/quickstart.md
-- [ ] T052 [P] Crear pruebas unitarias de JWT (emisión/validación/expiración) en src/test/java/com/dsw02/practica01/unit/security/JwtServiceTest.java
+- [X] T052 [P] Crear pruebas unitarias de JWT (emisión/validación/expiración) en src/test/java/com/dsw02/practica01/unit/security/JwtServiceTest.java
+- [ ] T053 [P] Documentar impacto de esquema PostgreSQL y estrategia de migración/rollback para autenticación en specs/002-autenticacion-empleados-correo/quickstart.md
 
 ---
 

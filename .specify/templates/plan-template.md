@@ -37,6 +37,8 @@
 - [ ] Container gate: Dockerfile and local container orchestration approach are defined.
 - [ ] API contract gate: OpenAPI/Swagger documentation update is planned with implementation.
 - [ ] Quality gate: Tests and compliance checks include auth, data access, and error paths.
+- [ ] Frontend gate (if applicable): Web client uses Angular version required by the assignment/practice.
+- [ ] Frontend security gate (if applicable): Frontend consumes only official backend API, handles JWT, protects private routes with guards, and maps backend 400/401/409 errors in UI.
 
 ## Project Structure
 

@@ -18,6 +18,9 @@ public record EmpleadoRequest(
         @Size(max = 255, message = "correo debe tener máximo 255 caracteres")
         String correo,
         @Size(min = 8, max = 100, message = "password debe tener entre 8 y 100 caracteres")
-        String password
+        String password,
+        @NotBlank(message = "departamentoClave es obligatorio")
+        @Size(max = 100, message = "departamentoClave debe tener máximo 100 caracteres")
+        String departamentoClave
 ) {
 }

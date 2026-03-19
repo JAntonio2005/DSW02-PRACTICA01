@@ -1,8 +1,11 @@
 package com.dsw02.practica01.empleados.domain;
 
+import com.dsw02.practica01.departamentos.domain.Departamento;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -27,6 +30,10 @@ public class Empleado {
 
     @Column(name = "password_hash", length = 64)
     private String passwordHash;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "departamento_clave", nullable = false)
+    private Departamento departamento;
 
     public String getClave() {
         return clave;
@@ -74,5 +81,13 @@ public class Empleado {
 
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
+    }
+
+    public Departamento getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(Departamento departamento) {
+        this.departamento = departamento;
     }
 }

@@ -71,6 +71,8 @@ Examples of foundational tasks (adjust based on your project):
 - [ ] T009 Configure structured logging and health checks
 - [ ] T010 Setup environment configuration management and secrets handling
 - [ ] T011 Add Dockerfile and docker-compose for app + PostgreSQL local runtime
+- [ ] T012 [P] (If frontend in scope) Setup Angular web app shell and environment configuration aligned with assignment/practice version
+- [ ] T013 [P] (If frontend in scope) Implement frontend auth baseline: backend JWT handling, private route guards, and standard UI mapping for backend 400/401/409 errors
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -249,6 +251,7 @@ With multiple developers:
 - [Story] label maps task to specific user story for traceability
 - Each user story should be independently completable and testable
 - Maintain constitution compliance: Java 17 + Spring Boot 3, auth, PostgreSQL, Docker, Swagger
+- When frontend is in scope, maintain constitution compliance for Angular, exclusive official backend API consumption, JWT handling, route guards, and UI error mapping (400/401/409)
 - Verify tests fail before implementing
 - Commit after each task or logical group
 - Stop at any checkpoint to validate story independently

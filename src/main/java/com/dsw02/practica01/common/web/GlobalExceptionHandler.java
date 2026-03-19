@@ -51,6 +51,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<ApiErrorResponse> handleConflict(ConflictException ex) {
+        if (ex.getMessage() != null && ex.getMessage().toLowerCase().contains("departamentoclave")) {
+            return build(HttpStatus.CONFLICT, "BUSINESS_VALIDATION_ERROR", ex.getMessage(), null);
+        }
         return build(HttpStatus.CONFLICT, "CONFLICT", ex.getMessage(), null);
     }
 

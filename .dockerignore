@@ -5,7 +5,8 @@
 # Build outputs
 build/
 out/
-target/
+target/*
+!target/*.jar
 
 # IDE / editor
 .vscode/
@@ -21,6 +22,8 @@ target/
 
 # Node (if ever present)
 node_modules/
+dist/
+.angular/
 coverage/
 
 # Docker build context hygiene

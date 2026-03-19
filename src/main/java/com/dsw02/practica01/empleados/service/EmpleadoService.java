@@ -2,6 +2,8 @@ package com.dsw02.practica01.empleados.service;
 
 import com.dsw02.practica01.common.exception.ResourceNotFoundException;
 import com.dsw02.practica01.common.exception.ConflictException;
+import com.dsw02.practica01.departamentos.domain.Departamento;
+import com.dsw02.practica01.departamentos.repository.DepartamentoRepository;
 import com.dsw02.practica01.empleados.domain.Empleado;
 import com.dsw02.practica01.empleados.dto.CredencialEmpleadoRequest;
 import com.dsw02.practica01.empleados.dto.EmpleadoRequest;
@@ -22,10 +24,16 @@ import java.security.NoSuchAlgorithmException;
 public class EmpleadoService {
 
     private final EmpleadoRepository empleadoRepository;
+    private final DepartamentoRepository departamentoRepository;
     private final JdbcTemplate jdbcTemplate;
 
-    public EmpleadoService(EmpleadoRepository empleadoRepository, JdbcTemplate jdbcTemplate) {
+    public EmpleadoService(
+            EmpleadoRepository empleadoRepository,
+            DepartamentoRepository departamentoRepository,
+            JdbcTemplate jdbcTemplate
+    ) {
         this.empleadoRepository = empleadoRepository;
+        this.departamentoRepository = departamentoRepository;
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -36,6 +44,7 @@ public class EmpleadoService {
         empleado.setNombre(normalize(request.nombre()));
         empleado.setDireccion(normalize(request.direccion()));
         empleado.setTelefono(normalize(request.telefono()));
+        empleado.setDepartamento(resolveDepartamento(request.departamentoClave()));
 
         if (request.correo() != null && !request.correo().isBlank()) {
             String correo = normalizeEmail(request.correo());
@@ -73,6 +82,7 @@ public class EmpleadoService {
         empleado.setNombre(normalize(request.nombre()));
         empleado.setDireccion(normalize(request.direccion()));
         empleado.setTelefono(normalize(request.telefono()));
+        empleado.setDepartamento(resolveDepartamento(request.departamentoClave()));
 
         if (request.correo() != null && !request.correo().isBlank()) {
             String correo = normalizeEmail(request.correo());
@@ -146,7 +156,13 @@ public class EmpleadoService {
                 empleado.getNombre(),
                 empleado.getDireccion(),
                 empleado.getTelefono(),
-                empleado.getCorreo()
+                empleado.getCorreo(),
+                empleado.getDepartamento() == null ? null : empleado.getDepartamento().getClave()
         );
+    }
+
+    private Departamento resolveDepartamento(String departamentoClave) {
+        return departamentoRepository.findById(departamentoClave)
+                .orElseThrow(() -> new ConflictException("departamentoClave no existe en catálogo de departamentos"));
     }
 }

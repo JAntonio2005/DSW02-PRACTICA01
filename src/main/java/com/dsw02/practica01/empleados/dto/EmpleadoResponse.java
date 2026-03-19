@@ -5,6 +5,7 @@ public record EmpleadoResponse(
         String nombre,
         String direccion,
         String telefono,
-        String correo
+        String correo,
+        String departamentoClave
 ) {
 }

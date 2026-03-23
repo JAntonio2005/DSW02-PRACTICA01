@@ -14,17 +14,21 @@ import { EmpleadosFormComponent } from './empleados-form.component';
   standalone: true,
   imports: [CommonModule, RouterLink, ApiErrorBannerComponent, EmpleadosFormComponent],
   template: `
-    <h1>{{ editMode ? 'Editar empleado' : 'Nuevo empleado' }}</h1>
-    <p><a routerLink="/empleados">Regresar al listado</a></p>
+    <section class="page-shell">
+      <h1>{{ editMode ? 'Editar empleado' : 'Nuevo empleado' }}</h1>
+      <p class="section-link"><a routerLink="/empleados">Regresar al listado</a></p>
 
-    <app-api-error-banner [error]="error" />
+      <app-api-error-banner [error]="error" />
 
-    <app-empleados-form
-      [initialValue]="initialValue"
-      [loading]="loading"
-      [readonlyClave]="editMode"
-      (submitted)="save($event)"
-    />
+      <div class="surface-panel">
+        <app-empleados-form
+          [initialValue]="initialValue"
+          [loading]="loading"
+          [readonlyClave]="editMode"
+          (submitted)="save($event)"
+        />
+      </div>
+    </section>
   `
 })
 export class EmpleadoFormPageComponent implements OnInit {

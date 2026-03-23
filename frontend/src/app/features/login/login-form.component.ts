@@ -26,18 +26,27 @@ import { requiredTrimmed } from '../../shared/forms/validators';
     `
       .login-form {
         display: grid;
-        gap: 12px;
-        max-width: 360px;
+        gap: 14px;
+        max-width: 100%;
       }
+
       label {
         display: grid;
         gap: 6px;
+        color: #d6cbf5;
+        font-size: 0.85rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
       }
+
       input {
-        padding: 8px;
+        padding: 11px 12px;
       }
+
       button {
-        padding: 8px;
+        margin-top: 4px;
+        width: 100%;
+        padding: 11px;
       }
     `
   ]

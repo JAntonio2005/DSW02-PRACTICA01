@@ -14,42 +14,44 @@ import { PaginationComponent } from '../../shared/ui/pagination.component';
   standalone: true,
   imports: [CommonModule, RouterLink, ApiErrorBannerComponent, PaginationComponent],
   template: `
-    <h1>Empleados</h1>
-    <p><a routerLink="/empleados/nuevo">Nuevo empleado</a></p>
+    <section class="page-shell">
+      <h1>Empleados</h1>
+      <p class="section-link"><a routerLink="/empleados/nuevo">Nuevo empleado</a></p>
 
-    <app-api-error-banner [error]="error" />
+      <app-api-error-banner [error]="error" />
 
-    <table *ngIf="items.length > 0; else emptyState">
-      <thead>
-        <tr>
-          <th>Clave</th>
-          <th>Nombre</th>
-          <th>Departamento</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of items">
-          <td>{{ item.clave }}</td>
-          <td>{{ item.nombre }}</td>
-          <td>{{ item.departamentoClave }}</td>
-          <td>
-            <a [routerLink]="['/empleados', item.clave, 'editar']">Editar</a>
-            <button type="button" (click)="remove(item.clave)">Eliminar</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+      <table *ngIf="items.length > 0; else emptyState">
+        <thead>
+          <tr>
+            <th>Clave</th>
+            <th>Nombre</th>
+            <th>Departamento</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of items">
+            <td>{{ item.clave }}</td>
+            <td>{{ item.nombre }}</td>
+            <td>{{ item.departamentoClave }}</td>
+            <td>
+              <a [routerLink]="['/empleados', item.clave, 'editar']">Editar</a>
+              <button type="button" (click)="remove(item.clave)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-    <ng-template #emptyState>
-      <p>No hay empleados.</p>
-    </ng-template>
+      <ng-template #emptyState>
+        <p>No hay empleados.</p>
+      </ng-template>
 
-    <app-pagination
-      [page]="page"
-      [totalPages]="totalPages"
-      (pageChange)="onPageChanged($event)"
-    />
+      <app-pagination
+        [page]="page"
+        [totalPages]="totalPages"
+        (pageChange)="onPageChanged($event)"
+      />
+    </section>
   `
 })
 export class EmpleadosListPageComponent implements OnInit {

@@ -19,13 +19,19 @@ import { ApiErrorViewModel } from '../../core/http/api.models';
   styles: [
     `
       .error-banner {
-        border: 1px solid #e53935;
-        background: #ffebee;
-        color: #b71c1c;
-        padding: 12px;
-        border-radius: 8px;
-        margin-bottom: 12px;
+        border: 1px solid var(--hb-danger-border);
+        background: var(--hb-danger-bg);
+        color: var(--hb-danger-text);
+        padding: 12px 14px;
+        border-radius: 12px;
+        margin-bottom: 14px;
+        backdrop-filter: blur(5px);
       }
+
+      strong {
+        font-family: 'Sora', 'Segoe UI', sans-serif;
+      }
+
       ul {
         margin: 8px 0 0;
         padding-left: 20px;

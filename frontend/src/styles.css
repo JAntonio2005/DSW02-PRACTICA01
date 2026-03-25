@@ -1,1 +1,144 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+	--hb-bg-900: #06020f;
+	--hb-bg-850: #0d0420;
+	--hb-bg-800: #13072e;
+	--hb-surface: #1a0b3f;
+	--hb-surface-strong: #220f55;
+	--hb-border: rgba(145, 102, 255, 0.34);
+	--hb-primary: #7e2eff;
+	--hb-primary-strong: #6522d4;
+	--hb-accent: #00d1ff;
+	--hb-text: #f5f2ff;
+	--hb-text-muted: #b7acd9;
+	--hb-danger-bg: rgba(210, 70, 115, 0.2);
+	--hb-danger-border: rgba(255, 108, 157, 0.5);
+	--hb-danger-text: #ffd9e8;
+	--hb-shadow-lg: 0 24px 64px rgba(6, 2, 18, 0.5);
+	--hb-shadow-md: 0 12px 30px rgba(6, 2, 18, 0.35);
+	--hb-radius-lg: 18px;
+	--hb-radius-md: 12px;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	margin: 0;
+	min-height: 100%;
+	font-family: 'Manrope', 'Segoe UI', sans-serif;
+	color: var(--hb-text);
+	background:
+		radial-gradient(1200px 600px at 8% -12%, rgba(0, 209, 255, 0.15), transparent 60%),
+		radial-gradient(900px 500px at 90% -8%, rgba(126, 46, 255, 0.36), transparent 58%),
+		linear-gradient(160deg, var(--hb-bg-900) 0%, var(--hb-bg-850) 45%, var(--hb-bg-800) 100%);
+}
+
+h1 {
+	margin: 0 0 14px;
+	font-family: 'Sora', 'Segoe UI', sans-serif;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+	color: var(--hb-text);
+}
+
+p {
+	margin-top: 0;
+	color: var(--hb-text-muted);
+}
+
+a {
+	color: var(--hb-accent);
+	text-decoration: none;
+	transition: color 160ms ease;
+}
+
+a:hover {
+	color: #7ce7ff;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 12px;
+	border-radius: var(--hb-radius-md);
+	overflow: hidden;
+	border: 1px solid var(--hb-border);
+	background: linear-gradient(180deg, rgba(36, 17, 83, 0.72), rgba(22, 9, 53, 0.78));
+	box-shadow: var(--hb-shadow-md);
+}
+
+th,
+td {
+	padding: 12px 14px;
+	text-align: left;
+}
+
+th {
+	font-size: 0.78rem;
+	text-transform: uppercase;
+	letter-spacing: 0.07em;
+	color: #d6cbf5;
+	background: rgba(7, 3, 17, 0.45);
+}
+
+tr + tr td {
+	border-top: 1px solid rgba(145, 102, 255, 0.2);
+}
+
+input {
+	width: 100%;
+	border: 1px solid rgba(161, 129, 255, 0.45);
+	background: rgba(10, 4, 26, 0.66);
+	color: var(--hb-text);
+	border-radius: 10px;
+	padding: 10px 12px;
+	outline: none;
+	transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+input:focus {
+	border-color: rgba(0, 209, 255, 0.95);
+	box-shadow: 0 0 0 3px rgba(0, 209, 255, 0.2);
+}
+
+button {
+	border: 0;
+	border-radius: 999px;
+	background: linear-gradient(120deg, var(--hb-primary) 0%, var(--hb-primary-strong) 100%);
+	color: #fff;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+	cursor: pointer;
+	box-shadow: 0 12px 24px rgba(83, 28, 187, 0.45);
+	transition: transform 140ms ease, filter 140ms ease;
+}
+
+button:hover:enabled {
+	transform: translateY(-1px);
+	filter: brightness(1.08);
+}
+
+button:disabled {
+	cursor: not-allowed;
+	opacity: 0.55;
+	box-shadow: none;
+}
+
+.page-shell {
+	background: linear-gradient(180deg, rgba(28, 12, 67, 0.74), rgba(18, 8, 43, 0.8));
+	border: 1px solid var(--hb-border);
+	border-radius: var(--hb-radius-lg);
+	box-shadow: var(--hb-shadow-lg);
+	backdrop-filter: blur(6px);
+	padding: 20px;
+}
+
+.section-link {
+	margin-bottom: 14px;
+}
+
+.surface-panel {
+	margin-top: 12px;
+}

@@ -14,17 +14,21 @@ import { DepartamentosFormComponent } from './departamentos-form.component';
   standalone: true,
   imports: [CommonModule, RouterLink, ApiErrorBannerComponent, DepartamentosFormComponent],
   template: `
-    <h1>{{ editMode ? 'Editar departamento' : 'Nuevo departamento' }}</h1>
-    <p><a routerLink="/departamentos">Regresar al listado</a></p>
+    <section class="page-shell">
+      <h1>{{ editMode ? 'Editar departamento' : 'Nuevo departamento' }}</h1>
+      <p class="section-link"><a routerLink="/departamentos">Regresar al listado</a></p>
 
-    <app-api-error-banner [error]="error" />
+      <app-api-error-banner [error]="error" />
 
-    <app-departamentos-form
-      [initialValue]="initialValue"
-      [loading]="loading"
-      [readonlyClave]="editMode"
-      (submitted)="save($event)"
-    />
+      <div class="surface-panel">
+        <app-departamentos-form
+          [initialValue]="initialValue"
+          [loading]="loading"
+          [readonlyClave]="editMode"
+          (submitted)="save($event)"
+        />
+      </div>
+    </section>
   `
 })
 export class DepartamentoFormPageComponent implements OnInit {

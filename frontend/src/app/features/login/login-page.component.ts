@@ -12,10 +12,27 @@ import { LoginFormComponent } from './login-form.component';
   standalone: true,
   imports: [LoginFormComponent, ApiErrorBannerComponent],
   template: `
-    <h1>Iniciar sesión</h1>
-    <app-api-error-banner [error]="error" />
-    <app-login-form [loading]="loading" (loginSubmitted)="onLogin($event)" />
-  `
+    <section class="page-shell login-shell">
+      <h1>Iniciar sesión</h1>
+      <p class="subtitle">Accede para administrar empleados y departamentos.</p>
+      <app-api-error-banner [error]="error" />
+      <div class="surface-panel">
+        <app-login-form [loading]="loading" (loginSubmitted)="onLogin($event)" />
+      </div>
+    </section>
+  `,
+  styles: [
+    `
+      .login-shell {
+        max-width: 560px;
+        margin: 42px auto 0;
+      }
+
+      .subtitle {
+        margin-bottom: 16px;
+      }
+    `
+  ]
 })
 export class LoginPageComponent {
   loading = false;

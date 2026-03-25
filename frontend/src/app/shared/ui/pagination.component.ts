@@ -18,10 +18,16 @@ import { CommonModule } from '@angular/common';
         display: flex;
         gap: 12px;
         align-items: center;
-        margin-top: 12px;
+        margin-top: 16px;
+        color: var(--hb-text-muted);
       }
+
+      span {
+        font-size: 0.9rem;
+      }
+
       button {
-        padding: 6px 10px;
+        padding: 8px 14px;
       }
     `
   ]

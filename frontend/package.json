@@ -8,7 +8,11 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
-    "test:e2e-critical": "ng test --watch=false --browsers=ChromeHeadless --include=src/app/e2e-critical-flows.spec.ts"
+    "test:e2e-critical": "ng test --watch=false --browsers=ChromeHeadless --include=src/app/e2e-critical-flows.spec.ts",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "e2e:report": "node -e \"require('fs').mkdirSync('cypress/results', { recursive: true })\" && cypress run --reporter json > cypress/results/latest-report.json",
+    "e2e": "start-server-and-test start http://localhost:4200 cypress:run"
   },
   "prettier": {
     "printWidth": 100,
@@ -40,6 +44,7 @@
     "@angular/compiler-cli": "^20.2.0",
     "@types/jasmine": "~5.1.0",
     "angular-eslint": "21.0.1",
+    "cypress": "^15.13.0",
     "eslint": "^9.39.1",
     "jasmine-core": "~5.9.0",
     "karma": "~6.4.0",
@@ -47,6 +52,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "start-server-and-test": "^2.1.5",
     "typescript": "~5.9.2",
     "typescript-eslint": "8.46.4"
   }

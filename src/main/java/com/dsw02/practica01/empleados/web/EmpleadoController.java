@@ -18,7 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping({"/api/empleados", "/api/v2/empleados"})
+@RequestMapping("/api/v2/empleados")
 @Tag(name = "Empleados", description = "Operaciones CRUD de empleados")
 public class EmpleadoController {
 

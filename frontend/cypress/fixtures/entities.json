@@ -1,0 +1,12 @@
+{
+  "departamento": {
+    "clavePrefix": "E2ED",
+    "nombre": "Departamento Cypress"
+  },
+  "empleado": {
+    "clavePrefix": "E2EE",
+    "nombre": "Empleado Cypress",
+    "direccion": "Calle Cypress 123",
+    "telefono": "2299990000"
+  }
+}

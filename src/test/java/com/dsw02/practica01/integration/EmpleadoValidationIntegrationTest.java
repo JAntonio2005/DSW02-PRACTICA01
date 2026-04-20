@@ -1,5 +1,6 @@
 package com.dsw02.practica01.integration;
 
+import com.dsw02.practica01.common.security.JwtService;
 import com.dsw02.practica01.common.security.SecurityConfig;
 import com.dsw02.practica01.common.web.GlobalExceptionHandler;
 import com.dsw02.practica01.empleados.service.EmpleadoService;
@@ -15,7 +16,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -36,19 +37,26 @@ class EmpleadoValidationIntegrationTest {
     @MockBean
     private EmpleadoService empleadoService;
 
+        @MockBean
+        private JwtService jwtService;
+
     @Test
     void shouldReturnBadRequestWhenNombreExceedsMaxLength() throws Exception {
+                when(jwtService.extractSubject("valid-token")).thenReturn("EMP-1");
+                when(jwtService.isTokenValid("valid-token")).thenReturn(true);
+
         String longNombre = "A".repeat(101);
         String body = """
                 {
                   \"nombre\": \"%s\",
                   \"direccion\": \"Av 1\",
-                  \"telefono\": \"5551234\"
+                                                                        \"telefono\": \"5551234\",
+                                                                        \"departamentoClave\": \"DEP-1\"
                 }
                 """.formatted(longNombre);
 
         mockMvc.perform(post("/api/v2/empleados")
-                        .with(httpBasic("admin", "admin123"))
+                        .header("Authorization", "Bearer valid-token")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andExpect(status().isBadRequest())
@@ -57,16 +65,20 @@ class EmpleadoValidationIntegrationTest {
 
     @Test
     void shouldReturnBadRequestWhenRequiredFieldIsBlank() throws Exception {
+        when(jwtService.extractSubject("valid-token")).thenReturn("EMP-1");
+        when(jwtService.isTokenValid("valid-token")).thenReturn(true);
+
         String body = """
                 {
                   \"nombre\": \" \" ,
                   \"direccion\": \"Av 1\",
-                  \"telefono\": \"5551234\"
+                                                                        \"telefono\": \"5551234\",
+                                                                        \"departamentoClave\": \"DEP-1\"
                 }
                 """;
 
         mockMvc.perform(post("/api/v2/empleados")
-                        .with(httpBasic("admin", "admin123"))
+                        .header("Authorization", "Bearer valid-token")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andExpect(status().isBadRequest())

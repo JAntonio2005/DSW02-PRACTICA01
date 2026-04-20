@@ -4,6 +4,7 @@ import com.dsw02.practica01.empleados.dto.LoginRequest;
 import com.dsw02.practica01.empleados.dto.LoginResponse;
 import com.dsw02.practica01.empleados.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ public class AuthController {
 
     @PostMapping("/login")
     @Operation(summary = "Iniciar sesión con correo/password")
+    @SecurityRequirements
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
     }

@@ -2,6 +2,7 @@ package com.dsw02.practica01.common.security;
 
 import com.dsw02.practica01.empleados.domain.Empleado;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
@@ -38,8 +39,12 @@ public class JwtService {
     }
 
     public boolean isTokenValid(String token) {
-        Claims claims = extractAllClaims(token);
-        return claims.getExpiration().after(new Date());
+        try {
+            Claims claims = extractAllClaims(token);
+            return claims.getExpiration().after(new Date());
+        } catch (JwtException | IllegalArgumentException ex) {
+            return false;
+        }
     }
 
     public long getExpirationSeconds() {

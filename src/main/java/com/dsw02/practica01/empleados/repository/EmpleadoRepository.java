@@ -22,4 +22,6 @@ public interface EmpleadoRepository extends JpaRepository<Empleado, String> {
 		boolean existsByCorreoIgnoreCase(String correo);
 
 		boolean existsByCorreoIgnoreCaseAndClaveNot(String correo, String clave);
+
+		boolean existsByDepartamento_Clave(String clave);
 }

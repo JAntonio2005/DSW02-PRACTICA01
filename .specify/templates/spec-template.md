@@ -12,6 +12,7 @@
 - Persistent data changes MUST define PostgreSQL impact and migration needs.
 - Delivery strategy MUST define Docker execution path (service + dependencies).
 - API changes MUST define OpenAPI/Swagger documentation updates.
+- Frontend web features MUST define Angular usage per assignment/practice version, official backend API consumption, JWT handling, route guards for private pages, and UI mapping for backend 400/401/409 errors.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -100,11 +101,13 @@
 - **FR-006**: System MUST document affected endpoints in OpenAPI/Swagger.
 - **FR-007**: System MUST define authentication requirements per endpoint/resource.
 - **FR-008**: System MUST define PostgreSQL schema/data changes and migration strategy.
+- **FR-009**: Web frontend (if in scope) MUST consume only the official backend API and handle JWT issued by backend.
+- **FR-010**: Web frontend private routes (if in scope) MUST be protected with guards and MUST map backend 400/401/409 errors in UI.
 
 *Example of marking unclear requirements:*
 
-- **FR-009**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - JWT, session, OAuth2?]
-- **FR-010**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
+- **FR-011**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - JWT, session, OAuth2?]
+- **FR-012**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
 
 ### Key Entities *(include if feature involves data)*
 

@@ -1,0 +1,336 @@
+openapi: 3.0.3
+info:
+  title: DSW02 Practica01 - Departamentos API (v2)
+  version: 2.0.0
+  description: Contrato esperado para Feature 003 (CRUD de Departamentos) y cambios en empleados.
+servers:
+  - url: /
+security:
+  - BearerAuth: []
+paths:
+  /api/auth/login:
+    post:
+      summary: Login con correo/password
+      operationId: login
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Token JWT generado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: Validación de entrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '401':
+          description: Credenciales inválidas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+  /api/v2/departamentos:
+    post:
+      summary: Crear departamento
+      operationId: createDepartamento
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepartamentoRequest'
+      responses:
+        '201':
+          description: Departamento creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartamentoResponse'
+        '400':
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '401':
+          description: No autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '409':
+          description: Conflicto (nombre duplicado)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+    get:
+      summary: Listar departamentos paginados
+      operationId: listDepartamentos
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - in: query
+          name: size
+          schema:
+            type: integer
+            minimum: 1
+            default: 10
+      responses:
+        '200':
+          description: Lista paginada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageDepartamentoResponse'
+        '401':
+          description: No autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+  /api/v2/departamentos/{clave}:
+    get:
+      summary: Obtener departamento por clave
+      operationId: getDepartamentoByClave
+      parameters:
+        - $ref: '#/components/parameters/ClaveDepartamento'
+      responses:
+        '200':
+          description: Departamento encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartamentoResponse'
+        '401':
+          description: No autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '404':
+          description: No encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+    put:
+      summary: Actualizar departamento
+      operationId: updateDepartamento
+      parameters:
+        - $ref: '#/components/parameters/ClaveDepartamento'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepartamentoRequest'
+      responses:
+        '200':
+          description: Departamento actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartamentoResponse'
+        '400':
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '401':
+          description: No autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '404':
+          description: No encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '409':
+          description: Conflicto (nombre duplicado)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+    delete:
+      summary: Eliminar departamento
+      operationId: deleteDepartamento
+      parameters:
+        - $ref: '#/components/parameters/ClaveDepartamento'
+      responses:
+        '204':
+          description: Eliminado
+        '401':
+          description: No autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '404':
+          description: No encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '409':
+          description: Departamento con empleados asociados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+  /api/v2/empleados:
+    post:
+      summary: Crear empleado (impactado por Feature 003)
+      description: Requiere `departamentoClave` obligatorio y existente.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmpleadoRequestV2'
+      responses:
+        '201':
+          description: Empleado creado
+        '400':
+          description: Validación de entrada
+        '409':
+          description: Validación de negocio / conflicto
+    put:
+      summary: Actualizar empleado (impactado por Feature 003)
+      description: Requiere `departamentoClave` obligatorio y existente.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmpleadoRequestV2'
+      responses:
+        '200':
+          description: Empleado actualizado
+        '400':
+          description: Validación de entrada
+        '409':
+          description: Validación de negocio / conflicto
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    ClaveDepartamento:
+      name: clave
+      in: path
+      required: true
+      schema:
+        type: string
+  schemas:
+    DepartamentoRequest:
+      type: object
+      required:
+        - nombre
+      properties:
+        nombre:
+          type: string
+          minLength: 1
+          maxLength: 100
+    DepartamentoResponse:
+      type: object
+      required:
+        - clave
+        - nombre
+      properties:
+        clave:
+          type: string
+        nombre:
+          type: string
+    EmpleadoRequestV2:
+      type: object
+      required:
+        - nombre
+        - direccion
+        - telefono
+        - departamentoClave
+      properties:
+        nombre:
+          type: string
+        direccion:
+          type: string
+        telefono:
+          type: string
+        correo:
+          type: string
+          format: email
+        password:
+          type: string
+        departamentoClave:
+          type: string
+    LoginRequest:
+      type: object
+      required:
+        - correo
+        - password
+      properties:
+        correo:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+    LoginResponse:
+      type: object
+      required:
+        - token
+        - expiresIn
+      properties:
+        token:
+          type: string
+        expiresIn:
+          type: integer
+    PageDepartamentoResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/DepartamentoResponse'
+        page:
+          type: integer
+        size:
+          type: integer
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+    ApiErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        code:
+          type: string
+        message:
+          type: string
+        fieldErrors:
+          type: object
+          additionalProperties:
+            type: string

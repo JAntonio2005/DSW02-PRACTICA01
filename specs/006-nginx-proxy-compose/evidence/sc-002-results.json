@@ -1,0 +1,178 @@
+﻿{
+    "timestamp":  "2026-04-15T14:58:07.9537278-06:00",
+    "iterations":  20,
+    "successCount":  20,
+    "successRate":  100,
+    "thresholdPercent":  95,
+    "passed":  true,
+    "composeFile":  "docker/docker-compose.yml",
+    "baseUrl":  "http://localhost",
+    "checks":  [
+                   "GET /",
+                   "POST /api/auth/login",
+                   "frontend service not published to host",
+                   "app service not published to host"
+               ],
+    "results":  [
+                    {
+                        "iteration":  1,
+                        "rootStatus":  200,
+                        "apiStatus":  401,
+                        "frontendHostBlocked":  true,
+                        "backendHostBlocked":  true,
+                        "passed":  true
+                    },
+                    {
+                        "iteration":  2,
+                        "rootStatus":  200,
+                        "apiStatus":  401,
+                        "frontendHostBlocked":  true,
+                        "backendHostBlocked":  true,
+                        "passed":  true
+                    },
+                    {
+                        "iteration":  3,
+                        "rootStatus":  200,
+                        "apiStatus":  401,
+                        "frontendHostBlocked":  true,
+                        "backendHostBlocked":  true,
+                        "passed":  true
+                    },
+                    {
+                        "iteration":  4,
+                        "rootStatus":  200,
+                        "apiStatus":  401,
+                        "frontendHostBlocked":  true,
+                        "backendHostBlocked":  true,
+                        "passed":  true
+                    },
+                    {
+                        "iteration":  5,
+                        "rootStatus":  200,
+                        "apiStatus":  401,
+                        "frontendHostBlocked":  true,
+                        "backendHostBlocked":  true,
+                        "passed":  true
+                    },
+                    {
+                        "iteration":  6,
+                        "rootStatus":  200,
+                        "apiStatus":  401,
+                        "frontendHostBlocked":  true,
+                        "backendHostBlocked":  true,
+                        "passed":  true
+                    },
+                    {
+                        "iteration":  7,
+                        "rootStatus":  200,
+                        "apiStatus":  401,
+                        "frontendHostBlocked":  true,
+                        "backendHostBlocked":  true,
+                        "passed":  true
+                    },
+                    {
+                        "iteration":  8,
+                        "rootStatus":  200,
+                        "apiStatus":  401,
+                        "frontendHostBlocked":  true,
+                        "backendHostBlocked":  true,
+                        "passed":  true
+                    },
+                    {
+                        "iteration":  9,
+                        "rootStatus":  200,
+                        "apiStatus":  401,
+                        "frontendHostBlocked":  true,
+                        "backendHostBlocked":  true,
+                        "passed":  true
+                    },
+                    {
+                        "iteration":  10,
+                        "rootStatus":  200,
+                        "apiStatus":  401,
+                        "frontendHostBlocked":  true,
+                        "backendHostBlocked":  true,
+                        "passed":  true
+                    },
+                    {
+                        "iteration":  11,
+                        "rootStatus":  200,
+                        "apiStatus":  401,
+                        "frontendHostBlocked":  true,
+                        "backendHostBlocked":  true,
+                        "passed":  true
+                    },
+                    {
+                        "iteration":  12,
+                        "rootStatus":  200,
+                        "apiStatus":  401,
+                        "frontendHostBlocked":  true,
+                        "backendHostBlocked":  true,
+                        "passed":  true
+                    },
+                    {
+                        "iteration":  13,
+                        "rootStatus":  200,
+                        "apiStatus":  401,
+                        "frontendHostBlocked":  true,
+                        "backendHostBlocked":  true,
+                        "passed":  true
+                    },
+                    {
+                        "iteration":  14,
+                        "rootStatus":  200,
+                        "apiStatus":  401,
+                        "frontendHostBlocked":  true,
+                        "backendHostBlocked":  true,
+                        "passed":  true
+                    },
+                    {
+                        "iteration":  15,
+                        "rootStatus":  200,
+                        "apiStatus":  401,
+                        "frontendHostBlocked":  true,
+                        "backendHostBlocked":  true,
+                        "passed":  true
+                    },
+                    {
+                        "iteration":  16,
+                        "rootStatus":  200,
+                        "apiStatus":  401,
+                        "frontendHostBlocked":  true,
+                        "backendHostBlocked":  true,
+                        "passed":  true
+                    },
+                    {
+                        "iteration":  17,
+                        "rootStatus":  200,
+                        "apiStatus":  401,
+                        "frontendHostBlocked":  true,
+                        "backendHostBlocked":  true,
+                        "passed":  true
+                    },
+                    {
+                        "iteration":  18,
+                        "rootStatus":  200,
+                        "apiStatus":  401,
+                        "frontendHostBlocked":  true,
+                        "backendHostBlocked":  true,
+                        "passed":  true
+                    },
+                    {
+                        "iteration":  19,
+                        "rootStatus":  200,
+                        "apiStatus":  401,
+                        "frontendHostBlocked":  true,
+                        "backendHostBlocked":  true,
+                        "passed":  true
+                    },
+                    {
+                        "iteration":  20,
+                        "rootStatus":  200,
+                        "apiStatus":  401,
+                        "frontendHostBlocked":  true,
+                        "backendHostBlocked":  true,
+                        "passed":  true
+                    }
+                ]
+}

@@ -6,13 +6,15 @@ services:
       POSTGRES_DB: empleadosdb
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-    ports:
-      - "5432:5432"
+    expose:
+      - "5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d empleadosdb"]
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - app-internal
 
   app:
     build:
@@ -28,8 +30,10 @@ services:
       DB_PASSWORD: postgres
       APP_JWT_SECRET: 0123456789ABCDEF0123456789ABCDEF
       APP_JWT_EXPIRATION_MINUTES: 60
-    ports:
-      - "8080:8080"
+    expose:
+      - "8080"
+    networks:
+      - app-internal
 
   frontend:
     build:
@@ -38,5 +42,24 @@ services:
     container_name: empleados-frontend
     depends_on:
       - app
+    expose:
+      - "4200"
+    networks:
+      - app-internal
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: empleados-nginx
+    depends_on:
+      - frontend
+      - app
     ports:
-      - "4200:4200"
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - app-internal
+
+networks:
+  app-internal:
+    name: empleados-app-internal

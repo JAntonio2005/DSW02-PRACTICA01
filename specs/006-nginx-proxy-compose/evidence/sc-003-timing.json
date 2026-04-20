@@ -1,0 +1,32 @@
+﻿{
+    "timestamp":  "2026-04-15T15:01:53.2501168-06:00",
+    "runs":  3,
+    "thresholdSeconds":  300,
+    "passed":  true,
+    "composeFile":  "docker/docker-compose.yml",
+    "baseUrl":  "http://localhost",
+    "definition":  "Tiempo total desde \u0027docker compose up -d --build\u0027 hasta validacion funcional minima exitosa",
+    "results":  [
+                    {
+                        "run":  1,
+                        "elapsedSeconds":  29.74,
+                        "thresholdSeconds":  300,
+                        "validated":  true,
+                        "withinThreshold":  true
+                    },
+                    {
+                        "run":  2,
+                        "elapsedSeconds":  136.6,
+                        "thresholdSeconds":  300,
+                        "validated":  true,
+                        "withinThreshold":  true
+                    },
+                    {
+                        "run":  3,
+                        "elapsedSeconds":  45.72,
+                        "thresholdSeconds":  300,
+                        "validated":  true,
+                        "withinThreshold":  true
+                    }
+                ]
+}

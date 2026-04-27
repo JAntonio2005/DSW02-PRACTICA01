@@ -43,10 +43,6 @@ jobs:
           cache: npm
           cache-dependency-path: frontend/package-lock.json
 
-      - name: Setup Chrome
-        id: setup-chrome
-        uses: browser-actions/setup-chrome@v1
-
       - name: Instalar dependencias frontend
         working-directory: frontend
         run: npm ci
@@ -55,8 +51,7 @@ jobs:
         working-directory: frontend
         env:
           CI: true
-          CHROME_BIN: ${{ steps.setup-chrome.outputs.chrome-path }}
-        run: npm run test -- --watch=false --browsers=ChromeHeadless --no-progress --code-coverage
+        run: npm run test -- --watch=false --browsers=ChromeHeadlessNoSandbox --no-progress --code-coverage --karma-config=karma.conf.js
 
       - name: Compilar backend (sin tests)
         run: |
@@ -64,7 +59,7 @@ jobs:
           ./mvnw -B -DskipTests compile
 
       - name: Ejecutar SonarCloud Scanner
-        uses: SonarSource/sonarqube-scan-action@v5
+        uses: SonarSource/sonarqube-scan-action@v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -73,10 +68,11 @@ jobs:
           args: >
             -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
             -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
+            -Dsonar.java.binaries=target/classes
             -Dsonar.javascript.lcov.reportPaths=frontend/coverage/frontend/lcov.info
 
       - name: Validar Quality Gate
-        uses: SonarSource/sonarqube-quality-gate-action@master
+        uses: SonarSource/sonarqube-quality-gate-action@v1.2.0
         timeout-minutes: 5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

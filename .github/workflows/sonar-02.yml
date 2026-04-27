@@ -1,11 +1,6 @@
 name: Sonar-02
 
 on:
-  workflow_run:
-    workflows:
-      - CI 01
-    types:
-      - completed
   workflow_dispatch:
   pull_request:
     branches:
@@ -19,7 +14,6 @@ on:
 jobs:
   sonarcloud:
     name: SonarCloud Scan
-    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -56,7 +50,7 @@ jobs:
       - name: Compilar backend (sin tests)
         run: |
           chmod +x mvnw
-          ./mvnw -B -DskipTests compile
+          ./mvnw --batch-mode --no-transfer-progress -DskipTests compile
 
       - name: Ejecutar SonarCloud Scanner
         uses: SonarSource/sonarqube-scan-action@v6

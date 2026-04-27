@@ -48,7 +48,8 @@ jobs:
       - name: Probar frontend
         working-directory: frontend
         run: |
-          npm ci
+          npm ci --ignore-scripts
+          npx cypress install
           npm run test -- --watch=false --browsers=ChromeHeadless --no-progress
 
       - name: Probar frontend E2E (Cypress)

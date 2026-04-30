@@ -12,13 +12,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,12 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = EmpleadoController.class)
 @AutoConfigureMockMvc
 @Import({SecurityConfig.class, GlobalExceptionHandler.class})
-class EmpleadoValidationIntegrationTest {
-    // Required test secret by project constitution for security test properties.
-    private static final String TEST_ADMIN_SECRET = "admin123";
-    private static final String TEST_TOKEN = "valid-token";
-    private static final String TEST_SUBJECT = "EMP-1";
-
+class EmpleadoValidationIntegrationTest extends AbstractSecurityWebMvcIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -41,28 +33,21 @@ class EmpleadoValidationIntegrationTest {
     @MockBean
     private JwtService jwtService;
 
-    @DynamicPropertySource
-    static void registerSecurityProperties(DynamicPropertyRegistry registry) {
-        registry.add("app.security.admin-user", () -> "admin");
-        registry.add("app.security.admin-password", () -> TEST_ADMIN_SECRET);
-        registry.add("app.security.admin-role", () -> "ADMIN");
-    }
-
     @Test
     void shouldReturnBadRequestWhenNombreExceedsMaxLength() throws Exception {
-        mockValidJwt();
+        mockValidJwt(jwtService);
 
         String longNombre = "A".repeat(101);
         String body = empleadoJsonWithNombre(longNombre);
 
         authorizedCreate(body)
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.fieldErrors.nombre").value(containsString("máximo 100")));
+                .andExpect(jsonPath("$.fieldErrors.nombre").value(containsString("m\u00E1ximo 100")));
     }
 
     @Test
     void shouldReturnBadRequestWhenRequiredFieldIsBlank() throws Exception {
-        mockValidJwt();
+        mockValidJwt(jwtService);
 
         String body = empleadoJsonWithNombre(" ");
 
@@ -71,14 +56,9 @@ class EmpleadoValidationIntegrationTest {
                 .andExpect(jsonPath("$.fieldErrors.nombre").value(containsString("obligatorio")));
     }
 
-    private void mockValidJwt() {
-        when(jwtService.extractSubject(TEST_TOKEN)).thenReturn(TEST_SUBJECT);
-        when(jwtService.isTokenValid(TEST_TOKEN)).thenReturn(true);
-    }
-
     private ResultActions authorizedCreate(String body) throws Exception {
         return mockMvc.perform(post("/api/v2/empleados")
-                .header("Authorization", "Bearer " + TEST_TOKEN)
+                .header("Authorization", bearerToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body));
     }

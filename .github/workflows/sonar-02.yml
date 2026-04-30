@@ -62,9 +62,9 @@ jobs:
             -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
             -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
             -Dsonar.sources=src/main/java,frontend/src
-            -Dsonar.exclusions=src/test/java/**,frontend/src/**/*.spec.ts,frontend/src/**/*.test.ts,frontend/cypress/**
-            -Dsonar.coverage.exclusions=src/test/java/**,frontend/src/**/*.spec.ts,frontend/src/**/*.test.ts,frontend/cypress/**
-            -Dsonar.cpd.exclusions=src/test/java/**,frontend/src/**/*.spec.ts,frontend/src/**/*.test.ts,frontend/cypress/**
+            -Dsonar.exclusions=src/test/java/**,frontend/src/**/*.spec.ts,frontend/src/**/*.test.ts,cypress/**,frontend/cypress/**,cypress.config.js,frontend/karma.conf.js,**/*.cy.js,**/*.cy.ts
+            -Dsonar.coverage.exclusions=src/test/java/**,frontend/src/**/*.spec.ts,frontend/src/**/*.test.ts,cypress/**,frontend/cypress/**,cypress.config.js,frontend/karma.conf.js,**/*.cy.js,**/*.cy.ts
+            -Dsonar.cpd.exclusions=src/test/java/**,frontend/src/**/*.spec.ts,frontend/src/**/*.test.ts,cypress/**,frontend/cypress/**,cypress.config.js,frontend/karma.conf.js,**/*.cy.js,**/*.cy.ts
             -Dsonar.java.binaries=target/classes
             -Dsonar.javascript.lcov.reportPaths=frontend/coverage/frontend/lcov.info
 

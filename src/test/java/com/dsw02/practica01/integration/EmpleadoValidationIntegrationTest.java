@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.when;
@@ -28,6 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class EmpleadoValidationIntegrationTest {
     // Required test secret by project constitution for security test properties.
     private static final String TEST_ADMIN_SECRET = "admin123";
+    private static final String TEST_TOKEN = "valid-token";
+    private static final String TEST_SUBJECT = "EMP-1";
 
     @Autowired
     private MockMvc mockMvc;
@@ -35,8 +38,8 @@ class EmpleadoValidationIntegrationTest {
     @MockBean
     private EmpleadoService empleadoService;
 
-        @MockBean
-        private JwtService jwtService;
+    @MockBean
+    private JwtService jwtService;
 
     @DynamicPropertySource
     static void registerSecurityProperties(DynamicPropertyRegistry registry) {
@@ -47,46 +50,47 @@ class EmpleadoValidationIntegrationTest {
 
     @Test
     void shouldReturnBadRequestWhenNombreExceedsMaxLength() throws Exception {
-                when(jwtService.extractSubject("valid-token")).thenReturn("EMP-1");
-                when(jwtService.isTokenValid("valid-token")).thenReturn(true);
+        mockValidJwt();
 
         String longNombre = "A".repeat(101);
-        String body = """
-                {
-                  \"nombre\": \"%s\",
-                  \"direccion\": \"Av 1\",
-                                                                        \"telefono\": \"5551234\",
-                                                                        \"departamentoClave\": \"DEP-1\"
-                }
-                """.formatted(longNombre);
+        String body = empleadoJsonWithNombre(longNombre);
 
-        mockMvc.perform(post("/api/v2/empleados")
-                        .header("Authorization", "Bearer valid-token")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
+        authorizedCreate(body)
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.fieldErrors.nombre").value(containsString("máximo 100")));
     }
 
     @Test
     void shouldReturnBadRequestWhenRequiredFieldIsBlank() throws Exception {
-        when(jwtService.extractSubject("valid-token")).thenReturn("EMP-1");
-        when(jwtService.isTokenValid("valid-token")).thenReturn(true);
+        mockValidJwt();
 
-        String body = """
-                {
-                  \"nombre\": \" \" ,
-                  \"direccion\": \"Av 1\",
-                                                                        \"telefono\": \"5551234\",
-                                                                        \"departamentoClave\": \"DEP-1\"
-                }
-                """;
+        String body = empleadoJsonWithNombre(" ");
 
-        mockMvc.perform(post("/api/v2/empleados")
-                        .header("Authorization", "Bearer valid-token")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
+        authorizedCreate(body)
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.fieldErrors.nombre").value(containsString("obligatorio")));
+    }
+
+    private void mockValidJwt() {
+        when(jwtService.extractSubject(TEST_TOKEN)).thenReturn(TEST_SUBJECT);
+        when(jwtService.isTokenValid(TEST_TOKEN)).thenReturn(true);
+    }
+
+    private ResultActions authorizedCreate(String body) throws Exception {
+        return mockMvc.perform(post("/api/v2/empleados")
+                .header("Authorization", "Bearer " + TEST_TOKEN)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body));
+    }
+
+    private String empleadoJsonWithNombre(String nombre) {
+        return """
+                {
+                  "nombre": "%s",
+                  "direccion": "Av 1",
+                  "telefono": "5551234",
+                  "departamentoClave": "DEP-1"
+                }
+                """.formatted(nombre);
     }
 }

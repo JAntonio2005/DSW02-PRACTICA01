@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -26,6 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AuthIntegrationTest {
     // Required test secret by project constitution for security test properties.
     private static final String TEST_ADMIN_SECRET = "admin123";
+    private static final String TEST_TOKEN = "valid-token";
+    private static final String TEST_SUBJECT = "EMP-1";
 
     @Autowired
     private MockMvc mockMvc;
@@ -52,12 +55,20 @@ class AuthIntegrationTest {
     @Test
     void shouldAllowRequestWithValidJwtToken() throws Exception {
         when(empleadoService.findAll(0, 10)).thenReturn(Page.empty());
-        when(jwtService.extractSubject("valid-token")).thenReturn("EMP-1");
-        when(jwtService.isTokenValid("valid-token")).thenReturn(true);
+        mockValidJwt();
 
-        mockMvc.perform(get("/api/v2/empleados")
-                        .header("Authorization", "Bearer valid-token"))
+        authorizedEmpleadosGet()
                 .andExpect(status().isOk());
+    }
+
+    private void mockValidJwt() {
+        when(jwtService.extractSubject(TEST_TOKEN)).thenReturn(TEST_SUBJECT);
+        when(jwtService.isTokenValid(TEST_TOKEN)).thenReturn(true);
+    }
+
+    private ResultActions authorizedEmpleadosGet() throws Exception {
+        return mockMvc.perform(get("/api/v2/empleados")
+                .header("Authorization", "Bearer " + TEST_TOKEN));
     }
 
 }

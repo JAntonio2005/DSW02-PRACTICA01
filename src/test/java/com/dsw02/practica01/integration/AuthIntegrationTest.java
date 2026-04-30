@@ -12,6 +12,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.when;
@@ -22,6 +24,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Import({SecurityConfig.class, GlobalExceptionHandler.class})
 class AuthIntegrationTest {
+    // Required test secret by project constitution for security test properties.
+    private static final String TEST_ADMIN_SECRET = "admin123";
 
     @Autowired
     private MockMvc mockMvc;
@@ -31,6 +35,13 @@ class AuthIntegrationTest {
 
     @MockBean
     private JwtService jwtService;
+
+    @DynamicPropertySource
+    static void registerSecurityProperties(DynamicPropertyRegistry registry) {
+        registry.add("app.security.admin-user", () -> "admin");
+        registry.add("app.security.admin-password", () -> TEST_ADMIN_SECRET);
+        registry.add("app.security.admin-role", () -> "ADMIN");
+    }
 
     @Test
     void shouldRejectRequestWithoutCredentials() throws Exception {

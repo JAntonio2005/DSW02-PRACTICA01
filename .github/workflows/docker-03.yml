@@ -16,7 +16,7 @@ jobs:
     permissions:
       contents: read
     env:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME || secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_IMAGE_NAME: ${{ vars.DOCKERHUB_IMAGE_NAME }}
 
     steps:
@@ -39,18 +39,41 @@ jobs:
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435
 
+      - name: Diagnose Docker image settings
+        run: |
+          USERNAME_TRIMMED="$(echo "${DOCKERHUB_USERNAME}" | tr -d '[:space:]')"
+          IMAGE_NAME_TRIMMED="$(echo "${DOCKERHUB_IMAGE_NAME}" | tr -d '[:space:]')"
+
+          if [ -n "${USERNAME_TRIMMED}" ]; then
+            echo "DOCKERHUB_USERNAME is set"
+          else
+            echo "DOCKERHUB_USERNAME is empty"
+          fi
+
+          if [ -n "${IMAGE_NAME_TRIMMED}" ]; then
+            echo "DOCKERHUB_IMAGE_NAME is set"
+          else
+            echo "DOCKERHUB_IMAGE_NAME is empty"
+          fi
+
+          if [ -n "${USERNAME_TRIMMED}" ] && [ -n "${IMAGE_NAME_TRIMMED}" ]; then
+            echo "Expected backend image: ${USERNAME_TRIMMED}/${IMAGE_NAME_TRIMMED}-backend"
+            echo "Expected frontend image: ${USERNAME_TRIMMED}/${IMAGE_NAME_TRIMMED}-frontend"
+          fi
+
       - name: Validate Docker image settings
         run: |
-          if [ -z "${DOCKERHUB_USERNAME}" ]; then
+          USERNAME_TRIMMED="$(echo "${DOCKERHUB_USERNAME}" | tr -d '[:space:]')"
+          IMAGE_NAME_TRIMMED="$(echo "${DOCKERHUB_IMAGE_NAME}" | tr -d '[:space:]')"
+
+          if [ -z "${USERNAME_TRIMMED}" ]; then
             echo "::error::DOCKERHUB_USERNAME is empty or not available in this workflow run."
             exit 1
           fi
-          if [ -z "${DOCKERHUB_IMAGE_NAME}" ]; then
+          if [ -z "${IMAGE_NAME_TRIMMED}" ]; then
             echo "::error::DOCKERHUB_IMAGE_NAME is empty or not available in this workflow run."
             exit 1
           fi
-          echo "Backend image: ${DOCKERHUB_USERNAME}/${DOCKERHUB_IMAGE_NAME}-backend"
-          echo "Frontend image: ${DOCKERHUB_USERNAME}/${DOCKERHUB_IMAGE_NAME}-frontend"
 
       - name: Login to Docker Hub
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef

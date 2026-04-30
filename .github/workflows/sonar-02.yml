@@ -61,6 +61,10 @@ jobs:
           args: >
             -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
             -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
+            -Dsonar.sources=src/main/java,frontend/src
+            -Dsonar.exclusions=src/test/java/**,frontend/src/**/*.spec.ts,frontend/src/**/*.test.ts,frontend/cypress/**
+            -Dsonar.coverage.exclusions=src/test/java/**,frontend/src/**/*.spec.ts,frontend/src/**/*.test.ts,frontend/cypress/**
+            -Dsonar.cpd.exclusions=src/test/java/**,frontend/src/**/*.spec.ts,frontend/src/**/*.test.ts,frontend/cypress/**
             -Dsonar.java.binaries=target/classes
             -Dsonar.javascript.lcov.reportPaths=frontend/coverage/frontend/lcov.info
 

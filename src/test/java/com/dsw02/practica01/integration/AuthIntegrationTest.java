@@ -12,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.when;
@@ -22,13 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = EmpleadoController.class)
 @AutoConfigureMockMvc
 @Import({SecurityConfig.class, GlobalExceptionHandler.class})
-@TestPropertySource(properties = {
-        "app.security.admin-user=admin",
-        "app.security.admin-password=admin123",
-        "app.security.admin-role=ADMIN"
-})
-class AuthIntegrationTest {
-
+class AuthIntegrationTest extends AbstractSecurityWebMvcIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -47,11 +40,10 @@ class AuthIntegrationTest {
     @Test
     void shouldAllowRequestWithValidJwtToken() throws Exception {
         when(empleadoService.findAll(0, 10)).thenReturn(Page.empty());
-        when(jwtService.extractSubject("valid-token")).thenReturn("EMP-1");
-        when(jwtService.isTokenValid("valid-token")).thenReturn(true);
+        mockValidJwt(jwtService);
 
         mockMvc.perform(get("/api/v2/empleados")
-                        .header("Authorization", "Bearer valid-token"))
+                        .header("Authorization", bearerToken()))
                 .andExpect(status().isOk());
     }
 

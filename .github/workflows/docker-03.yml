@@ -15,6 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_IMAGE_NAME: ${{ vars.DOCKERHUB_IMAGE_NAME }}
 
     steps:
       - name: Checkout
@@ -36,17 +39,30 @@ jobs:
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435
 
+      - name: Validate Docker image settings
+        run: |
+          if [ -z "${DOCKERHUB_USERNAME}" ]; then
+            echo "::error::DOCKERHUB_USERNAME is empty or not available in this workflow run."
+            exit 1
+          fi
+          if [ -z "${DOCKERHUB_IMAGE_NAME}" ]; then
+            echo "::error::DOCKERHUB_IMAGE_NAME is empty or not available in this workflow run."
+            exit 1
+          fi
+          echo "Backend image: ${DOCKERHUB_USERNAME}/${DOCKERHUB_IMAGE_NAME}-backend"
+          echo "Frontend image: ${DOCKERHUB_USERNAME}/${DOCKERHUB_IMAGE_NAME}-frontend"
+
       - name: Login to Docker Hub
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          username: ${{ env.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Extract Docker metadata (backend)
         id: meta-backend
         uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f
         with:
-          images: ${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_IMAGE_NAME }}-backend
+          images: ${{ env.DOCKERHUB_USERNAME }}/${{ env.DOCKERHUB_IMAGE_NAME }}-backend
           tags: |
             type=ref,event=branch
             type=sha
@@ -65,7 +81,7 @@ jobs:
         id: meta-frontend
         uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f
         with:
-          images: ${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_IMAGE_NAME }}-frontend
+          images: ${{ env.DOCKERHUB_USERNAME }}/${{ env.DOCKERHUB_IMAGE_NAME }}-frontend
           tags: |
             type=ref,event=branch
             type=sha

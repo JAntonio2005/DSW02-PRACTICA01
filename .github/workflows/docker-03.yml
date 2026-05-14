@@ -1,9 +1,9 @@
-name: Docker-03
+name: 04-DockerHub
 
 on:
   workflow_run:
     workflows:
-      - Sonar-02
+      - 03-Cypress
     types:
       - completed
   workflow_dispatch:

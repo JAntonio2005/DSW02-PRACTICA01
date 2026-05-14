@@ -1,18 +1,17 @@
-name: Sonar-02
+name: 02-SonarCloud
 
 on:
-  workflow_dispatch:
-  pull_request:
-    branches:
-      - master
+  workflow_run:
+    workflows:
+      - 01-CI
     types:
-      - opened
-      - synchronize
-      - reopened
+      - completed
+  workflow_dispatch:
 
 jobs:
   sonarcloud:
     name: SonarCloud Scan
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -68,8 +67,20 @@ jobs:
             -Dsonar.java.binaries=target/classes
             -Dsonar.javascript.lcov.reportPaths=frontend/coverage/frontend/lcov.info
 
+      - name: Diagnosticar report-task de Sonar
+        run: |
+          if [ ! -f .scannerwork/report-task.txt ]; then
+            echo "::error::No existe .scannerwork/report-task.txt. El scanner no generó metadata esperada."
+            exit 1
+          fi
+          echo "report-task.txt exists"
+          grep -E '^(projectKey|serverUrl|dashboardUrl|ceTaskUrl)=' .scannerwork/report-task.txt || true
+
       - name: Validar Quality Gate
         uses: SonarSource/sonarqube-quality-gate-action@cf038b0e0cdecfa9e56c198bbb7d21d751d62c3b
+        with:
+          scanMetadataReportFile: .scannerwork/report-task.txt
         timeout-minutes: 5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io

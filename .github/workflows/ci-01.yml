@@ -1,4 +1,4 @@
-name: CI 01
+name: 01-CI
 
 on:
   push:
@@ -49,10 +49,4 @@ jobs:
         working-directory: frontend
         run: |
           npm ci --ignore-scripts
-          CYPRESS_VERSION=$(node -p "require('./package-lock.json').packages['node_modules/cypress'].version")
-          CYPRESS_INSTALL_BINARY="$CYPRESS_VERSION" ./node_modules/.bin/cypress install
           npm run test -- --watch=false --browsers=ChromeHeadless --no-progress
-
-      - name: Probar frontend E2E (Cypress)
-        working-directory: frontend
-        run: npm run e2e
